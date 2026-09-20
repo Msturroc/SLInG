@@ -326,7 +326,9 @@ def gibbs_sampler(x_obs,y_obs, var_obs, name, direc = "./", truncation = [], spa
                 else:
                     prior_multiplier = 1.
 
-                orho = prior_multiplier*normal_density(theta_t[-2,j*K+k]-theta[j*K+k],step)*ParamPrior(truncation,theta[j*K+k],k)
+                # Reverse jump q(theta_old | theta_new). This previously used theta_t[-2],
+                # i.e. q(theta_old | theta_older), which made the chain non-Markovian.
+                orho = prior_multiplier*normal_density(theta[j*K+k]-theta_k,step)*ParamPrior(truncation,theta[j*K+k],k)
 
                 # Generate Model prediction from new parameters
 
